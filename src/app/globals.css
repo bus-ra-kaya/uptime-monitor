@@ -3,11 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --faded: #535252;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-faded: var(--faded);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -19,8 +21,20 @@
   }
 }
 
+@layer utilities {
+  .common-gradient {
+    @apply bg-gradient-to-b from-slate-200 to-blue-100
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg transition-colors duration-200 bg-slate-100 border-slate-600 border-2 cursor-pointer hover:bg-slate-200 active:bg-slate-100;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--rubik);
 }
