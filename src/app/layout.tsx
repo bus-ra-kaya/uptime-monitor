@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
-import Header from "./components/common/header";
-import Footer from "./components/common/footer";
+import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
+import Providers from "./components/Providers";
 
 const rubik = Rubik({
   variable: "--rubik",
@@ -31,10 +32,14 @@ export default async function RootLayout({
       lang="en"
       className={`${rubik.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex mx-auto flex-col w-full max-w-8xl">
-        <Header />
-          {children}
-        <Footer />
+      <body className="min-h-full flex flex-col items-center justify-center mx-auto max-w-450 px-16">
+        <Providers>
+         <Header />
+          <div className="flex-1 p-4">
+            {children}
+          </div>
+          <Footer /> 
+        </Providers>
       </body>
     </html>
   );

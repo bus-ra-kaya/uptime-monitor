@@ -1,25 +1,41 @@
+'use client';
 
-import { endpoints } from "@/data";
-import EndpointCard from "./components/endpointcard";
-import RecentSummary from "./components/summary";
+import { ActivityIcon, ArrowRight } from "lucide-react";
+import EndpointList from "./components/EndpointList";
+import RecentSummary from "./components/Summary";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+
+  const {data: session, status} = useSession();
+
+  if(status === 'loading') return ( <p>Loading...</p>);
+
   return (
-    <div className="flex flex-col flex-1 items-center bg-zinc-50 font-sans dark:bg-black w-full common-gradient">
-     
-      <RecentSummary />
-      <div>
-        {endpoints.map((endpoint) => (
-          <EndpointCard 
-            key={endpoint.url} 
-            name={endpoint.name} 
-            url={endpoint.url}
-            status={endpoint.status}
-            uptime={endpoint.uptime}
-            latency={endpoint.latency}
-          />
-        ))}
-      </div>
+
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black w-full px-10 py-2 common-gradient">
+
+      {session ? (
+        <>
+          <RecentSummary />
+          <EndpointList />
+        </>
+      ): (
+        <div className="flex p-2 ">
+           <ActivityIcon size='100' color='green' />
+          <div className="flex flex-col items-center">
+            <h2 className="text-4xl mb-2">Know the second something goes down</h2>
+            <p className="text-lg text-faded mb-8 max-w-140">Uptime monitor checks your endpoints every minute and alerts you before your customers notice.</p>
+
+            <button className="btn btn-primary">
+              <Link href='/signin'>Start monitoring </Link>
+              <ArrowRight />
+            </button>
+          </div>
+        </div>
+      )}
+      
     </div>
   );
 }
