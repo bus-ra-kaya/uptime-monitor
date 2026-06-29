@@ -7,7 +7,10 @@ export const authOptions = {
       clientId: process.env.GITHUB_ID ?? "",
       clientSecret: process.env.GITHUB_SECRET ?? ""
     })
-  ]
+  ],
+  session: {
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 5 * 60},
 }
 
 export const handler = NextAuth(authOptions);
