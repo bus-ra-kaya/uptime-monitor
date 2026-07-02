@@ -28,11 +28,11 @@ export default function Avatar(){
             alt={`${userName}'s avatar`}
             width={60}
             height={60}
-            className="rounded-full object-cover border-3 border-blue-900"
+            className="rounded-full object-cover border-3 border-border-color"
             referrerPolicy="no-referrer" 
           />
         ) : (
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-sm font-semibold text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-border-color text-sm font-semibold text-secondary">
             {userName.charAt(0).toUpperCase()}
           </div>
         )}

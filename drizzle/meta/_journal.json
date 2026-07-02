@@ -8,6 +8,20 @@
       "when": 1782729126694,
       "tag": "0000_living_mysterio",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782817224318,
+      "tag": "0001_flashy_steve_rogers",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782817561227,
+      "tag": "0002_flowery_stardust",
+      "breakpoints": true
     }
   ]
 }

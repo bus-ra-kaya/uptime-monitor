@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
 
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black w-full px-10 py-2 common-gradient">
+    <>
 
       {session ? (
         <>
@@ -22,7 +22,7 @@ export default function Home() {
           <EndpointList />
         </>
       ): (
-        <div className="flex p-2 ">
+        <div className="flex p-2 text-primary">
            <ActivityIcon size='100' color='green' />
           <div className="flex flex-col items-center">
             <h2 className="text-4xl mb-2">Know the second something goes down</h2>
@@ -36,6 +36,6 @@ export default function Home() {
         </div>
       )}
       
-    </div>
+    </>
   );
 }

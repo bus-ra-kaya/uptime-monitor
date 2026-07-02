@@ -32,12 +32,12 @@ export default async function RootLayout({
       lang="en"
       className={`${rubik.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col items-center justify-center mx-auto max-w-450 px-16">
+      <body className="min-h-full flex flex-col mx-auto max-w-450 px-16">
         <Providers>
          <Header />
-          <div className="flex-1 p-4">
+          <main className="flex-1 flex flex-col h-full items-center justify-center font-sans bg-card w-full px-10 py-2">
             {children}
-          </div>
+          </main>
           <Footer /> 
         </Providers>
       </body>

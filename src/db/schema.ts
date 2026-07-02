@@ -1,4 +1,4 @@
-import { boolean, index, integer, pgEnum, pgTable, PrimaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, integer, pgEnum, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const authRoleEnum = pgEnum('auth_role', ['user', 'admin']);
 export const monitorTypeEnum = pgEnum('monitor_type', ['http', 'ping', 'dns']);
@@ -6,59 +6,61 @@ export const monitorStatusEnum = pgEnum('monitor_status', ['active', 'paused']);
 export const checkStatusEnum = pgEnum('check_status', ['up','down']);
 export const incidentStatusEnum = pgEnum ('incident_status', ['investigating', 'identified']);
 
-export const users = pgTable('users', {
+export const user = pgTable('user', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: text('email').notNull().unique(),
+  emailVerified: timestamp('emailVerified', { mode: 'date'}), 
   name: text('name'),
+  image: text('image'),
   role: authRoleEnum('role').default('user').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'date'}).defaultNow().notNull(), 
+  updatedAt: timestamp('updated_at', {mode: 'date'}).defaultNow().notNull(),
 });
 
-export const accounts = pgTable('accounts', {
-  userId: uuid('user_id').notNull().references(() => users.id, {onDelete: 'cascade'}),
+export const account = pgTable('account', {
+  userId: uuid('userId').notNull().references(() => user.id, {onDelete: 'cascade'}),
   type: text('type').notNull(),
   provider: text('provider').notNull(),
-  providerAccountId: text("provider_account_id").notNull(),
+  providerAccountId: text("providerAccountId").notNull(),
 
-  refresh_token: text('refresh_token'),
-  access_token: text('access_token'),
-  expires_at: integer('expires_at'),
-  token_type: text('token_type'),
+  refreshToken: text('refresh_token'),
+  accessToken: text('access_token'),
+  expiresAt: integer('expires_at'),
+  tokenType: text('token_type'),
   scope: text('scope'),
-  id_token: text('id_token'),
-  session_state: text('session_state'),
+  idToken: text('id_token'),
+  sessionState: text('session_state'),
 },
-(table) => ({
-  columns: [table.provider, table.providerAccountId],
-}));
+(table) => [
+  primaryKey({columns: [table.provider, table.providerAccountId]})
+]);
 
-export const sessions = pgTable('sessions', {
-  sessionToken: text('session_token').primaryKey(),
-  userId: uuid('user_id')
-  .notNull()
-  .references(() => users.id, {onDelete: 'cascade'}),
-  expires: timestamp('expires').notNull(),
+export const session = pgTable('session', {
+  sessionToken: text('sessionToken').primaryKey(),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => user.id, {onDelete: 'cascade'}),
+  expires: timestamp('expires', {mode: 'date'}).notNull(),
 });
 
-export const verificationTokens = pgTable(
-  'verification_tokens',
+export const verificationToken = pgTable(
+  'verificationToken',
   {
     identifier: text('identifier').notNull(),
     token: text('token').notNull(),
-    expires: timestamp('expires').notNull(),
+    expires: timestamp('expires', {mode: 'date'}).notNull(),
   },
-  (table) => ({
-      columns: [table.identifier, table.token],
-    })
+  (table) => [
+    primaryKey({columns: [table.identifier, table.token]})
+  ]
 );
 
-export const monitors = pgTable('monitors', {
+export const monitor = pgTable('monitors', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade'}).notNull(),
+  userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade'}).notNull(),
   name: text('name').notNull(),
   url: text('url').notNull(),
-  type: monitorTypeEnum('status').default('http').notNull(),
+  type: monitorTypeEnum('type').default('http').notNull(),
   status: monitorStatusEnum('status').default('active').notNull(),
   interval: integer('interval').default(60).notNull(),
   timeout: integer('timeout').default(5).notNull(),
@@ -72,9 +74,9 @@ export const monitors = pgTable('monitors', {
   index('monitor_user_idx').on(table.userId)
 ]);
 
-export const checks = pgTable('checks', {
+export const check = pgTable('checks', {
   id: uuid('id').primaryKey().defaultRandom(),
-  monitorId: uuid('monitor_id').references(() => monitors.id, {onDelete: 'cascade'}).notNull(),
+  monitorId: uuid('monitor_id').references(() => monitor.id, {onDelete: 'cascade'}).notNull(),
   status: checkStatusEnum('status').notNull(),
   latency: integer('latency').notNull(),
   statusCode: integer('status_code'),
@@ -84,9 +86,9 @@ export const checks = pgTable('checks', {
   index('check_monitor_date_index').on(table.monitorId, table.createdAt)
 ]);
 
-export const incidents = pgTable('incidents', {
+export const incident = pgTable('incidents', {
   id: uuid('id').primaryKey().defaultRandom(),
-  monitorId: uuid('monitor_id').references(() => monitors.id, {onDelete: 'cascade'}).notNull(),
+  monitorId: uuid('monitor_id').references(() => monitor.id, {onDelete: 'cascade'}).notNull(),
   status: incidentStatusEnum('status').default('investigating').notNull(),
 
   startedAt: timestamp('started_at').defaultNow().notNull(),
