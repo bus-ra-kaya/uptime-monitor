@@ -1,33 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --background: #15181C;
-  --card: #1B1F24;
-  --border: #2A2E34;
-  --border-hover: #3A3F47;
-  --text-primary: #E4E7EB;
-  --text-secondary: #A6ADB8;
-  --text-muted: #7A828C;
-  --text-disabled: #6B7280;
-  --status-up: #3DDC84;
-  --status-slow: #F0B429;
-  --status-down: #F0554C;
+  /* Base surfaces */
+  --bg: #121327;
+  --surface: #08101b;
+  --surface-raised: #232830;
+  --surface-hover: #2A3038;
+
+  /* Borders */
+  --border: #0f1d31;
+  --border-strong: #1d2f4b;
+
+  /* Foreground */
+  --fg: #E4E7EB;
+  --fg-muted: #A6ADB8;
+  --fg-subtle: #7A828C;
+  --fg-disabled: #6B7280;
+
+  /* Brand / Accent */
+  --accent: #4F8CFF;
+  --accent-hover: #6BA2FF;
+  --accent-soft: #20395F;
+
+  /* Status */
+  --success: #3DDC84;
+  --warning: #F0B429;
+  --danger: #F0554C;
+  --neutral: #7C8798;
+
+  /* Accessibility */
+  --focus: #7DB3FF;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-card: var(--card);
-  --color-border-color: var(--border);
-  --color-border-hover: var(--border-hover);
-  --color-primary: var(--text-primary);
-  --color-secondary: var(--text-secondary);
-  --color-muted: var(--text-muted);
-  --color-disabled: var(--text-disabled);
-  --color-up: var(--status-up);
-  --color-slow: var(--status-slow); 
-  --color-down: var(--status-down);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Surfaces */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+
+  /* Borders */
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  /* Text */
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-disabled: var(--fg-disabled);
+
+  /* Accent */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  /* Status */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-neutral: var(--neutral);
+
+  /* Focus */
+  --color-focus: var(--focus);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,16 +77,22 @@
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-4 px-6 py-3 rounded-lg transition-colors duration-200 bg-card border-slate-600 border-2 cursor-pointer hover:bg-border-color active:bg-border-hover text-secondary;
+    @apply inline-flex items-center justify-center gap-4 px-6 py-3 rounded-lg transition-colors duration-200 border-border-strong border-2 bg-surface hover:bg-surface-hover active:bg-surface cursor-pointer;
   }
 
-  .btn-primary {
-    @apply bg-slate-900 text-slate-200 hover:bg-slate-800 active:bg-slate-600
+  .btn-secondary {
+    @apply bg-fg text-bg hover:bg-focus hover:text-surface active:bg-fg active:text-bg
   }
+
+  .input {
+    @apply bg-surface-raised w-full py-2 px-2 border-border-strong border rounded-md
+  }
+
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--rubik);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  letter-spacing: 0.425;
 }

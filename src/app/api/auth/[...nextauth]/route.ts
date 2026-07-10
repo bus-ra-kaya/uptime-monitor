@@ -29,6 +29,14 @@ export const authOptions: NextAuthOptions = {
         console.error('Failed to set default role for user', newUser.id, err);
       }
     }
+  },
+  callbacks: {
+    async session({session, user}){
+      if(session.user){
+        session.user.id = user.id;
+      }
+      return session;
+    }
   }
 }
 

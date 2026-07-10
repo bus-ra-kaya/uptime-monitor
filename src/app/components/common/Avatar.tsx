@@ -28,16 +28,16 @@ export default function Avatar(){
             alt={`${userName}'s avatar`}
             width={60}
             height={60}
-            className="rounded-full object-cover border-3 border-border-color"
+            className="rounded-full object-cover border-3 border-border-strong"
             referrerPolicy="no-referrer" 
           />
         ) : (
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-border-color text-sm font-semibold text-secondary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface text-sm font-semiboldy">
             {userName.charAt(0).toUpperCase()}
           </div>
         )}
       </div>
-      <div className="absolute flex-col flex items-center gap-2 bg-slate-800 p-2 left-1/2 -translate-x-1/2  mt-2 rounded-lg min-w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+      <div className="absolute flex-col flex items-center gap-2 bg-surface p-2 left-1/2 -translate-x-1/2  mt-2 rounded-lg min-w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
         <span className="text-slate-200">{userName}</span>
         <LogoutButton />
       </div>

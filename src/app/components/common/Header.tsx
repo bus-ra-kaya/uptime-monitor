@@ -11,7 +11,7 @@ export default function Header (){
 
   return (
     <nav className="flex items-center justify-between mt-8 w-full pb-2 border-b border-b-border-color ">
-      <h1 className="text-3xl bold text-primary cursor-pointer hover:text-secondary flex items-center gap-2">
+      <h1 className="text-3xl bold cursor-pointer flex items-center gap-2">
         <Link href='/' className="flex items-center gap-1">
           <Circle size='16' color="green" fill="green"/>
           Uptime Monitor

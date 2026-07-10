@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 export default function LogoutButton(){
@@ -5,6 +6,7 @@ export default function LogoutButton(){
   return (
     <button className="btn" onClick={() => signOut({callbackUrl: '/'})}>
       Log out
+       <ArrowRight />
     </button>
   )
 }
