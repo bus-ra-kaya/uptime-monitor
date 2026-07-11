@@ -3,7 +3,7 @@
 import {Circle, UserRound} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Avatar from "./Avatar";
+import Avatar from "./src/app/components/common/Avatar";
 
 export default function Header (){
 

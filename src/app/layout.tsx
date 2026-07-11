@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
-import Header from "./components/common/Header";
+import Header from "../../Header";
 import Footer from "./components/common/Footer";
 import Providers from "./components/Providers";
 
