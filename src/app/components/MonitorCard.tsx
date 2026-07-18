@@ -1,15 +1,15 @@
-import { Circle} from "lucide-react";
+import { Circle } from "lucide-react";
 
 type Props = {
   name: string;
   url: string;
-  status: "up" | "down" | "slow",
+  status?: "up" | "down" | "slow",
   graph?: string;
-  latency: string;
-  uptime: string;
+  latency?: string;
+  uptime?: string;
 }
 
-export default function EndpointCard({name, url, status, latency, uptime}: Props){
+export default function MonitorCard({name, url, status = 'up', latency = '20ms', uptime = '98%'}: Props){
 
   const statusColor = {
     up: 'green',

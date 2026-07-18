@@ -1,25 +1,22 @@
-'use client';
 
-import { ActivityIcon, ArrowRight } from "lucide-react";
-import EndpointList from "./components/EndpointList";
-import RecentSummary from "./components/Summary";
+import { ActivityIcon, ArrowRight} from "lucide-react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
+import RecentSummary from "./components/Summary";
+import MonitorsList from "./components/MonitorsList";
+import ManageMonitors from "./components/ManageMonitors";
 
-export default function Home() {
+export default async function Home() {
 
-  const {data: session, status} = useSession();
-
-  if(status === 'loading') return ( <p>Loading...</p>);
+  const session = await auth();
 
   return (
-
     <>
-
       {session ? (
         <>
-          <RecentSummary />
-          <EndpointList />
+        <RecentSummary />
+        <ManageMonitors />
+        <MonitorsList />
         </>
       ): (
         <div className="flex p-2">
@@ -34,8 +31,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-      )}
-      
+      )} 
     </>
   );
 }

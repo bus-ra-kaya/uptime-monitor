@@ -1,15 +1,18 @@
-import { boolean, index, integer, pgEnum, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { boolean, check, index, integer, pgEnum, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const authRoleEnum = pgEnum('auth_role', ['user', 'admin']);
-export const monitorTypeEnum = pgEnum('monitor_type', ['http', 'ping', 'dns']);
+export const notificationMethodEnum = pgEnum('notification_method', ['email', 'webhook', 'none']);
+export const monitorTypeEnum = pgEnum('monitor_type', ['GET', 'POST', 'HEAD']);
 export const monitorStatusEnum = pgEnum('monitor_status', ['active', 'paused']);
 export const checkStatusEnum = pgEnum('check_status', ['up','down']);
-export const incidentStatusEnum = pgEnum ('incident_status', ['investigating', 'identified']);
+export const incidentStatusEnum = pgEnum('incident_status', ['investigating', 'identified']);
+
 
 export const user = pgTable('user', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: text('email').notNull().unique(),
-  emailVerified: timestamp('emailVerified', { mode: 'date'}), 
+  emailVerified: timestamp('emailVerified', { mode: 'date'}),
   name: text('name'),
   image: text('image'),
   role: authRoleEnum('role').default('user').notNull(),
@@ -18,7 +21,9 @@ export const user = pgTable('user', {
 });
 
 export const account = pgTable('account', {
-  userId: uuid('userId').notNull().references(() => user.id, {onDelete: 'cascade'}),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => user.id, {onDelete: 'cascade'}),
   type: text('type').notNull(),
   provider: text('provider').notNull(),
   providerAccountId: text("providerAccountId").notNull(),
@@ -36,7 +41,7 @@ export const account = pgTable('account', {
 ]);
 
 export const session = pgTable('session', {
-  sessionToken: text('sessionToken').primaryKey(),
+  sessionToken: text('sessionToken').primaryKey(), 
   userId: uuid('userId')
     .notNull()
     .references(() => user.id, {onDelete: 'cascade'}),
@@ -44,7 +49,7 @@ export const session = pgTable('session', {
 });
 
 export const verificationToken = pgTable(
-  'verificationToken',
+  'verification_token', 
   {
     identifier: text('identifier').notNull(),
     token: text('token').notNull(),
@@ -55,14 +60,19 @@ export const verificationToken = pgTable(
   ]
 );
 
-export const monitor = pgTable('monitors', {
+export const monitor = pgTable('monitor', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade'}).notNull(),
   name: text('name').notNull(),
   url: text('url').notNull(),
-  type: monitorTypeEnum('type').default('http').notNull(),
+  method: monitorTypeEnum('method').default('GET').notNull(),
+  expectedStatusCode: integer('expected_status_code').default(200).notNull(),
+  payload: text('payload'),
+  webhookUrl: text('webhook_url'), // Safely mapping to unique 'webhook_url' column
+  notificationMethod: notificationMethodEnum('notification_method').default('email').notNull(),
   status: monitorStatusEnum('status').default('active').notNull(),
-  interval: integer('interval').default(60).notNull(),
+
+  frequency: integer('frequency').default(1).notNull(),
   timeout: integer('timeout').default(5).notNull(),
 
   isUp: boolean('is_up').default(true).notNull(),
@@ -71,10 +81,15 @@ export const monitor = pgTable('monitors', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull()
 }, (table) => [
+  check(
+    'interval_range_check',
+    sql `${table.frequency} >= 1 AND ${table.frequency} <= 1440`
+  ),
   index('monitor_user_idx').on(table.userId)
 ]);
 
-export const check = pgTable('checks', {
+
+export const monitorCheck = pgTable('monitor_check', {
   id: uuid('id').primaryKey().defaultRandom(),
   monitorId: uuid('monitor_id').references(() => monitor.id, {onDelete: 'cascade'}).notNull(),
   status: checkStatusEnum('status').notNull(),
@@ -86,7 +101,8 @@ export const check = pgTable('checks', {
   index('check_monitor_date_index').on(table.monitorId, table.createdAt)
 ]);
 
-export const incident = pgTable('incidents', {
+
+export const incident = pgTable('incident', {
   id: uuid('id').primaryKey().defaultRandom(),
   monitorId: uuid('monitor_id').references(() => monitor.id, {onDelete: 'cascade'}).notNull(),
   status: incidentStatusEnum('status').default('investigating').notNull(),
@@ -96,7 +112,3 @@ export const incident = pgTable('incidents', {
 }, (table) => [
   index('incident_monitor_idx').on(table.monitorId),
 ]);
-
-// different monitor types?? What's the difference between just http and pinging a service and also dns?
-
-// need to find a way to delete old data

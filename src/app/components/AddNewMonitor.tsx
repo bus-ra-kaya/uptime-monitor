@@ -1,4 +1,5 @@
-import { error } from "console";
+'use client';
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -13,9 +14,10 @@ type FormData = {
   method: 'GET' | 'POST' | 'HEAD';
   expectedStatusCode: number;
   frequency: number;
+  timeout: number;
   notificationMethod: 'email' | 'webhook' | 'none';
-  webhookUrl: string;
-  payload: string;
+  webhookUrl?: string;
+  payload?: string;
 }
 
 const initialFormData: FormData = {
@@ -24,12 +26,11 @@ const initialFormData: FormData = {
   method: 'GET',
   expectedStatusCode: 200,
   frequency: 5,
+  timeout: 5,
   notificationMethod: 'email',
-  webhookUrl: '',
-  payload: '',
 }
 
-export default function AddNewEndpoint ({onSuccess, onCancel}: Props){
+export default function AddNewMonitor ({onSuccess, onCancel}: Props){
 
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -64,11 +65,15 @@ export default function AddNewEndpoint ({onSuccess, onCancel}: Props){
       next.frequency = 'Frequency must be between 1 and 1440 minutes';
     }
 
+    if(formData.timeout < 1 || formData.frequency > 60) {
+      next.timeout = 'Timeout must be between 1 and 60';
+    }
+
     if (formData.expectedStatusCode < 100 || formData.expectedStatusCode > 599) {
       next.expectedStatusCode = 'Must be a valid HTTP status code';
     }
 
-    if (formData.notificationMethod === 'webhook' && !formData.webhookUrl.trim()) {
+    if (formData.notificationMethod === 'webhook' && formData.webhookUrl &&!formData.webhookUrl.trim()) {
       next.webhookUrl = 'Webhook URL is required';
     }
 
@@ -160,6 +165,19 @@ export default function AddNewEndpoint ({onSuccess, onCancel}: Props){
             {errors.frequency && (
               <p className="text-danger text-sm">{errors.frequency}</p>
             )} 
+        </div>
+
+        <label htmlFor="timeout">Timeout:</label>
+        <div>
+          <input 
+            type="number"
+            id='timeout'
+            value={formData.timeout}
+            onChange={(e) => update('timeout', Number(e.target.value))}
+            className="input" />
+            {errors.timeout && (
+              <p className="text-danger text-sm">{errors.timeout}</p>
+            )}
         </div>
 
         <label htmlFor="expectedStatusCode">Expected status code:</label>

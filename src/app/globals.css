@@ -88,6 +88,10 @@
     @apply bg-surface-raised w-full py-2 px-2 border-border-strong border rounded-md
   }
 
+  .wrapper {
+    @apply flex flex-col items-center justify-center
+  }
+
 }
 
 body {

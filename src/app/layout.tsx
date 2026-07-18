@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
 import "./globals.css";
 import Header from "../../Header";
 import Footer from "./components/common/Footer";
 import Providers from "./components/Providers";
-
-const rubik = Rubik({
-  variable: "--rubik",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Uptime Monitor",
@@ -30,12 +24,12 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${rubik.variable} h-full antialiased`}
+      className={`h-full antialiased`}
     >
       <body className="min-h-full flex flex-col mx-auto max-w-450 px-16">
         <Providers>
          <Header />
-          <main className="flex-1 flex flex-col h-full items-center justify-center font-sans w-full px-10 py-2">
+          <main className="flex-1 wrapper justify-start h-full font-sans w-full px-10 py-2">
             {children}
           </main>
           <Footer /> 

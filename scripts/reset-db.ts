@@ -1,14 +1,15 @@
-import { db } from "@/db/db";
+import { db } from "../src/db/db";
 import { sql } from "drizzle-orm";
 
 
 async function reset() {
-  await db.execute(sql`DROP TABLE IF EXISTS sessions, accounts, users, verification_tokens, monitors,checks, incidents CASCADE`);
+  console.log('Wiping public schema...');
 
-  await db.execute(sql`DROP TYPE IF EXISTS auth_role, monitor_type, monitor_status, check_status, incident_status CASCADE`);
+  await db.execute(sql`DROP SCHEMA public CASCADE;`);
 
-  console.log('Tables and types dropped');
+  await db.execute(sql`CREATE SCHEMA public;`);
 
+  console.log('Database reset to blank state!');
 }
 
 reset()

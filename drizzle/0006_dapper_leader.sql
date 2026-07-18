@@ -1,0 +1,1 @@
+ALTER TABLE "monitors" RENAME COLUMN "type" TO "method";

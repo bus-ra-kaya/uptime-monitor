@@ -1,11 +1,61 @@
-import { authOptions } from "../auth/[...nextauth]/route";
-import { getServerSession } from "next-auth/next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth"; // your NextAuth v5 config
+import { db } from "../../../db/db";
+import { monitor } from "../../../db/schema";
+import { z } from "zod";
+import { desc, eq } from "drizzle-orm";
 
-export async function GET(){
-  const session =  await getServerSession(authOptions);
+const createMonitorSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  url: z.url('Must be a valid URL'),
+  method: z.enum(["GET", "POST","HEAD"]),
+  expectedStatusCode: z.coerce.number().int().min(100).max(599),
+  payload: z.string().optional(),
+  notificationMethod: z.enum(["email", "webhook", "none"]),
+  frequency: z.coerce.number().int().min(1).max(1440),
+  timeout: z.coerce.number().int().positive(),
+  webhookUrl: z.url('Must be a valid URL').optional(),
+})
 
-  if(!session?.user?.id){
+export async function POST(req: NextRequest) {
+
+  const session = await auth();
+
+  if(!session?.user.id) {
     return NextResponse.json({error: 'Unauthorized'}, {status: 401});
   }
+
+  const body = await req.json();
+  const parsed = createMonitorSchema.safeParse(body);
+
+  if(!parsed.success) {
+    return NextResponse.json({fieldErrors: z.flattenError(parsed.error)}, {status: 400});
+  };
+
+  const [newMonitor] = await db
+    .insert(monitor)
+    .values({
+      ...parsed.data,
+      userId: session.user.id,
+    })
+    .returning();
+
+  console.log('Success!');
+  return NextResponse.json(newMonitor, {status: 201});
+}
+
+export async function GET(req: NextRequest) {
+  const session = await auth();
+
+  if(!session?.user.id) {
+    return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+  }
+
+  const monitors = await db
+    .select()
+    .from(monitor)
+    .where(eq(monitor.userId, session.user.id))
+    .orderBy(desc(monitor.createdAt));
+
+  return NextResponse.json(monitors, {status: 200});
 }
