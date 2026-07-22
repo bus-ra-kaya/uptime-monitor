@@ -2,9 +2,7 @@
 import { ActivityIcon, ArrowRight} from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/auth";
-import RecentSummary from "./components/Summary";
-import MonitorsList from "./components/MonitorsList";
-import ManageMonitors from "./components/ManageMonitors";
+import Dashboard from "./components/common/Dashboard";
 
 export default async function Home() {
 
@@ -13,11 +11,7 @@ export default async function Home() {
   return (
     <>
       {session ? (
-        <>
-        <RecentSummary />
-        <ManageMonitors />
-        <MonitorsList />
-        </>
+        <Dashboard />
       ): (
         <div className="flex p-2">
            <ActivityIcon size='100' color='green' />

@@ -4,18 +4,7 @@ import { db } from "../../../db/db";
 import { monitor } from "../../../db/schema";
 import { z } from "zod";
 import { desc, eq } from "drizzle-orm";
-
-const createMonitorSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  url: z.url('Must be a valid URL'),
-  method: z.enum(["GET", "POST","HEAD"]),
-  expectedStatusCode: z.coerce.number().int().min(100).max(599),
-  payload: z.string().optional(),
-  notificationMethod: z.enum(["email", "webhook", "none"]),
-  frequency: z.coerce.number().int().min(1).max(1440),
-  timeout: z.coerce.number().int().positive(),
-  webhookUrl: z.url('Must be a valid URL').optional(),
-})
+import { createMonitorSchema } from "@/lib/monitor";
 
 export async function POST(req: NextRequest) {
 

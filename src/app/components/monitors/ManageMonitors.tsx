@@ -2,33 +2,33 @@
 
 import { useState } from "react";
 import AddNewMonitor from "./AddNewMonitor";
-import Modal from "./Modal";
-import Tooltip from "./common/Tooltip";
-import { Settings } from "lucide-react";
+import Modal from "../Modal";
+import Tooltip from "../common/Tooltip";
+import { Plus } from "lucide-react";
 
-export default function ManageMonitors () {
+type Props = {
+  totalMonitors: number;
+}
+
+export default function ManageMonitors ({totalMonitors}: Props) {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
-      <div className='wrapper p-4 flex-row justify-between w-full '>
+      <div className='wrapper p-4 flex-row justify-between min-w-200'>
         <div className="flex flex-col items-start">
-          <span className="text-xl mr-auto ml-4 mb-2">Endpoints</span>
-          <span className="text-fg-muted text-md mr-auto ml-4 mb-2">6 endpoints</span>
+          <span className="text-2xl mr-auto ml-4 mb-2">Monitors</span>
+          <span className="text-fg-muted text-md mr-auto ml-4 mb-2">{totalMonitors} monitors in total</span>
         </div>
         <div className="flex gap-2">
           <Tooltip text='Add a new endpoint'>
-            <button className="btn h-16 w-16" 
+            <button className="btn h-16" 
               onClick={() => setIsOpen(true)} 
               aria-label='Add a new endpoint'
             >
-              +
-            </button>
-          </Tooltip>
-          <Tooltip text='Settings'>
-            <button className="btn h-16 w-16">
-              <Settings size='16' color="white"/>
+              Add a new endpoint
+              <Plus aria-hidden='true' />
             </button>
           </Tooltip>
         </div>

@@ -24,11 +24,11 @@ export default function MonitorCard({name, url, status = 'up', latency = '20ms',
 };
 
   return (
-    <div className="border border-border-strong bg-surface px-20 py-6 rounded-xl mb-4 flex gap-4 items-center justify-between">
+    <div className="border border-border-strong bg-surface px-12 py-6 rounded-xl mb-4 flex gap-4 items-center justify-between hover:bg-surface-hover active:bg-surface cursor-pointer">
       <Circle color={statusColor[status]} size="20" fill={statusColor[status]} />
       <div className="flex flex-col justify-center w-80 min-w-40">
         <span className="text-lg font-bold">{name}</span>
-        <span className="text-fg-muted">{url}</span>
+        <span className="text-fg-muted cursor-pointer">{url}</span>
       </div>
 
       <button className={`rounded-2xl btn w-20 text-sm ${colorCodes[status]}`}>{status.toUpperCase()}</button>

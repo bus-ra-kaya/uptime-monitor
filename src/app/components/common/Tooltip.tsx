@@ -60,7 +60,7 @@ export default function Tooltip({text, children}: TooltipProps){
         role='tooltip'
         id={tooltipId}
         aria-hidden={!isVisible}
-        className={`text-slate-200 bg-surface-raised p-2 absolute rounded-lg top-[110%] left-1/2 -translate-x-1/2 shadow-lg  transition-opacity duration-150 ${isVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`bg-surface-raised p-2 absolute rounded-lg top-[110%] left-1/2 -translate-x-1/2 shadow-lg  transition-opacity duration-150 ${isVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}
       >
         {text}
       </span>

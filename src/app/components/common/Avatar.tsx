@@ -37,8 +37,8 @@ export default function Avatar(){
           </div>
         )}
       </div>
-      <div className="absolute flex-col flex items-center gap-2 bg-surface p-2 left-1/2 -translate-x-1/2  mt-2 rounded-lg min-w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-        <span className="text-slate-200">{userName}</span>
+      <div className="absolute flex-col flex items-center gap-2 bg-surface p-2 left-1/2 -translate-x-1/2  mt-4 rounded-lg min-w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-border-strong">
+        <span>{userName}</span>
         <LogoutButton />
       </div>
     </div>

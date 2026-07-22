@@ -1,5 +1,6 @@
 'use client';
 
+import { FormData, initialMonitorData } from "@/lib/monitor";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -8,32 +9,10 @@ type Props = {
   onCancel: () => void;
 }
 
-type FormData = {
-  name: string;
-  url: string;
-  method: 'GET' | 'POST' | 'HEAD';
-  expectedStatusCode: number;
-  frequency: number;
-  timeout: number;
-  notificationMethod: 'email' | 'webhook' | 'none';
-  webhookUrl?: string;
-  payload?: string;
-}
-
-const initialFormData: FormData = {
-  name: '',
-  url: '',
-  method: 'GET',
-  expectedStatusCode: 200,
-  frequency: 5,
-  timeout: 5,
-  notificationMethod: 'email',
-}
-
 export default function AddNewMonitor ({onSuccess, onCancel}: Props){
 
   const router = useRouter();
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(initialMonitorData);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);

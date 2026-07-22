@@ -2,34 +2,29 @@
 
 :root {
   /* Base surfaces */
-  --bg: #121327;
-  --surface: #08101b;
-  --surface-raised: #232830;
-  --surface-hover: #2A3038;
-
+  --bg: #FFFFFF;
+  --surface: #FBFBFC;
+  --surface-raised: #FFFFFF;
+  --surface-hover: #F2F3F5;
   /* Borders */
-  --border: #0f1d31;
-  --border-strong: #1d2f4b;
-
+  --border: #E6E8EB;
+  --border-strong: #647896;
   /* Foreground */
-  --fg: #E4E7EB;
-  --fg-muted: #A6ADB8;
-  --fg-subtle: #7A828C;
-  --fg-disabled: #6B7280;
-
+  --fg: #111318;
+  --fg-muted: #565C66;
+  --fg-subtle: #797F89;
+  --fg-disabled: #A9AFB8;
   /* Brand / Accent */
   --accent: #4F8CFF;
-  --accent-hover: #6BA2FF;
-  --accent-soft: #20395F;
-
+  --accent-hover: #3D74E0;
+  --accent-soft: #E8F0FF;
   /* Status */
-  --success: #3DDC84;
-  --warning: #F0B429;
-  --danger: #F0554C;
-  --neutral: #7C8798;
-
+  --success: #16A34A;
+  --warning: #D97706;
+  --danger: #DC2626;
+  --neutral: #6B7280;
   /* Accessibility */
-  --focus: #7DB3FF;
+  --focus: #4F8CFF;
 }
 
 @theme inline {
@@ -77,7 +72,7 @@
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-4 px-6 py-3 rounded-lg transition-colors duration-200 border-border-strong border-2 bg-surface hover:bg-surface-hover active:bg-surface cursor-pointer;
+    @apply inline-flex items-center justify-center gap-4 px-6 py-3 rounded-lg transition-colors duration-200 border-border-strong border bg-surface hover:bg-surface-hover active:bg-surface cursor-pointer;
   }
 
   .btn-secondary {
@@ -85,7 +80,7 @@
   }
 
   .input {
-    @apply bg-surface-raised w-full py-2 px-2 border-border-strong border rounded-md
+    @apply bg-surface-raised w-full py-2 px-2 border-border-strong border rounded-md disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-transparent;
   }
 
   .wrapper {
@@ -93,7 +88,7 @@
   }
 
 }
-
+ 
 body {
   background: var(--bg);
   color: var(--fg);
