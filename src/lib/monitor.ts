@@ -16,7 +16,7 @@ export const createMonitorSchema = z
   })
   .superRefine((data, ctx) => {
 
-     const hasWebhookUrl = !!data.webhookUrl && data.webhookUrl !== "";
+    const hasWebhookUrl = !!data.webhookUrl && data.webhookUrl !== "";
 
     if(data.notificationMethod === 'webhook' && !hasWebhookUrl){
       ctx.addIssue({
@@ -39,12 +39,12 @@ export const createMonitorSchema = z
         message: 'Only POST requests can include a payload'
       })
     }
-  });
+});
 
 
-export type FormData = z.infer<typeof createMonitorSchema>;
+export type MonitorFormData = z.infer<typeof createMonitorSchema>;
 
-export const initialMonitorData: FormData = {
+export const initialMonitorData: MonitorFormData = {
   name: "",
   url: "",
   method: "GET",

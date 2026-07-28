@@ -14,7 +14,7 @@ export default function MonitorCardClient({cardContent, modalContent }: Props) {
 
   return (
     <>
-    <div onClick={() => setIsOpen(true)}>
+    <div onClick={() => setIsOpen(true)} >
       {cardContent}
     </div>
 

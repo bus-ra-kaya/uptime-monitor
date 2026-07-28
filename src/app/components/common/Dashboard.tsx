@@ -6,8 +6,7 @@ import Summary from "../Summary";
 import ManageMonitors from "../monitors/ManageMonitors";
 import MonitorCardClient from "../monitors/MonitorCardClient";
 import MonitorCard from "../monitors/MonitorCard";
-import MonitorDetail from "../monitors/MonitorDetail";
-
+import MonitorInfo from "../monitors/MonitorInfo";
 
 export default async function Dashboard(){
 
@@ -28,7 +27,7 @@ export default async function Dashboard(){
     .orderBy(desc(monitor.createdAt));
 
   return (
-    <>
+    <div className="">
       <Summary totalUp={monitors.length} />
       <ManageMonitors totalMonitors={monitors.length} />
       {monitors.length === 0 ? 
@@ -42,9 +41,14 @@ export default async function Dashboard(){
           cardContent={
             <MonitorCard name={m.name} url={m.url}  />
           }
-          modalContent={ <MonitorDetail monitor={m} onSaved={() => {}} /> }
+          modalContent={ 
+          <>
+            
+            <MonitorInfo monitor={m} />
+          </>
+         }
         />
         )}
-    </>
+    </div>
   )
 }

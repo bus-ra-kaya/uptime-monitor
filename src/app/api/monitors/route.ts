@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth"; // your NextAuth v5 config
+import { auth } from "@/auth";
 import { db } from "../../../db/db";
 import { monitor } from "../../../db/schema";
 import { z } from "zod";
 import { desc, eq } from "drizzle-orm";
 import { createMonitorSchema } from "@/lib/monitor";
+import { withErrorHandling } from "@/lib/withErrorHandling";
 
-export async function POST(req: NextRequest) {
+export const POST = withErrorHandling(async(req: NextRequest) => {
 
   const session = await auth();
 
@@ -31,9 +32,9 @@ export async function POST(req: NextRequest) {
 
   console.log('Success!');
   return NextResponse.json(newMonitor, {status: 201});
-}
+});
 
-export async function GET(req: NextRequest) {
+export const GET = withErrorHandling(async () => {
   const session = await auth();
 
   if(!session?.user.id) {
@@ -47,4 +48,5 @@ export async function GET(req: NextRequest) {
     .orderBy(desc(monitor.createdAt));
 
   return NextResponse.json(monitors, {status: 200});
-}
+
+});

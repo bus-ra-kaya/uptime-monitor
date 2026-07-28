@@ -49,7 +49,7 @@ export default function Modal({isOpen, onClose, children}: Props){
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-sm">
-      <div ref={contentRef} className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg">
+      <div ref={contentRef} className="max-h-[90vh] w-full overflow-y-auto rounded-lg flex justify-center">
         {children}
       </div>
     </div>,
